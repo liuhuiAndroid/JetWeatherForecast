@@ -77,8 +77,10 @@ dependencies {
     implementation libs.retrofit
     implementation libs.okhttp
     implementation libs.logging.interceptor
-    implementation libs.retrofit.gson.converter
+    implementation libs.retrofit.moshi.converter
     implementation libs.timber
+    implementation libs.moshi
+    ksp libs.moshi.codegen
 
     // Coil
     implementation libs.coil.compose

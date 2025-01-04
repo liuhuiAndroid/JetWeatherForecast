@@ -1,6 +1,9 @@
 package com.weather.forecast.model
 
+import com.squareup.moshi.JsonClass
+
 // 每小时天气数据类
+@JsonClass(generateAdapter = true)
 data class Hourly(
     // 预报时间
     val fxTime: String,

@@ -1,6 +1,9 @@
 package com.weather.forecast.model
 
+import com.squareup.moshi.JsonClass
+
 // 当前天气数据类
+@JsonClass(generateAdapter = true)
 data class Now(
     // 数据观测时间
     val obsTime: String,

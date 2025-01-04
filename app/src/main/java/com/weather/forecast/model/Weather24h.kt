@@ -1,6 +1,9 @@
 package com.weather.forecast.model
 
+import com.squareup.moshi.JsonClass
+
 // 24小时天气预报数据类
+@JsonClass(generateAdapter = true)
 data class Weather24h(
     // 状态码，标识请求的响应状态
     val code: String,

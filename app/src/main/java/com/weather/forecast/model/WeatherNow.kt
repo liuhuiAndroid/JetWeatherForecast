@@ -1,6 +1,9 @@
 package com.weather.forecast.model
 
+import com.squareup.moshi.JsonClass
+
 // 实时天气
+@JsonClass(generateAdapter = true)
 data class WeatherNow(
     // 状态码，标识请求的响应状态，通常是数字或字符串
     val code: String,

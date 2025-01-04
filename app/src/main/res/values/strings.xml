@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
-    <string name="about_app">Weather App v.0.1</string>
-    <string name="api_used">Weather API by: https://api.qweather.com</string>
+    <string name="app_name">JetWeatherForecast</string>
+    <string name="about_app">Weather App v.1.0</string>
+    <string name="api_used">Weather API by: https://dev.qweather.com/docs/api/</string>
 </resources>

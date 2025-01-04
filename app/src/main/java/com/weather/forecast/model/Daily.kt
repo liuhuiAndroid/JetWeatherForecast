@@ -1,6 +1,9 @@
 package com.weather.forecast.model
 
+import com.squareup.moshi.JsonClass
+
 // 每日天气数据类
+@JsonClass(generateAdapter = true)
 data class Daily(
     // 预报日期
     val fxDate: String,
