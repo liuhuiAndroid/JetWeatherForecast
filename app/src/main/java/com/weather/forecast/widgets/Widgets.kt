@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.material.Surface
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,7 +29,6 @@ import com.weather.forecast.model.WeatherNow
 
 @Composable
 fun WeatherDetailRow(daily: Daily) {
-    val imageUrl = "https://openweathermap.org/img/wn/${daily.sunset}.png"
     Surface(
         Modifier
             .padding(3.dp)
@@ -43,21 +42,23 @@ fun WeatherDetailRow(daily: Daily) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
+                daily.fxDate,
+                modifier = Modifier.padding(start = 5.dp)
+            )
+            Text(
                 daily.textDay,
                 modifier = Modifier.padding(start = 5.dp)
             )
-            WeatherStateImage(imageUrl = imageUrl)
             Surface(
                 modifier = Modifier.padding(0.dp),
                 shape = CircleShape,
                 color = Color(0xFFFFC400)
             ) {
                 Text(
-                    daily.moonPhase,
+                    daily.textDay,
                     modifier = Modifier.padding(4.dp),
                     style = MaterialTheme.typography.bodySmall
                 )
-
             }
             Text(text = buildAnnotatedString {
                 withStyle(
@@ -82,7 +83,7 @@ fun WeatherDetailRow(daily: Daily) {
 }
 
 @Composable
-fun SunsetSunRiseRow(weather: WeatherNow) {
+fun SunsetSunRiseRow(daily: Daily) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -90,20 +91,20 @@ fun SunsetSunRiseRow(weather: WeatherNow) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Row {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
                 painter = painterResource(id = R.drawable.sunrise),
                 contentDescription = "sunrise",
                 modifier = Modifier.size(30.dp)
             )
             Text(
-                text = weather.now.obsTime,
+                text = "${daily.sunrise}AM",
                 style = androidx.compose.material.MaterialTheme.typography.caption
             )
         }
-        Row {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = weather.now.obsTime,
+                text = "${daily.sunset}PM",
                 style = androidx.compose.material.MaterialTheme.typography.caption
             )
             Image(
@@ -154,7 +155,7 @@ fun HumidityWindPressureRow(weather: WeatherNow) {
                 modifier = Modifier.size(20.dp)
             )
             Text(
-                text = "${weather.now.pressure}m/s",
+                text = "${weather.now.windSpeed}km/h",
                 style = MaterialTheme.typography.bodySmall
             )
         }

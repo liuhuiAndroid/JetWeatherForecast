@@ -1,5 +1,6 @@
 package com.weather.forecast.screens.main
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,8 +33,8 @@ import com.weather.forecast.model.WeatherData
 import com.weather.forecast.navigation.WeatherScreens
 import com.weather.forecast.widgets.HumidityWindPressureRow
 import com.weather.forecast.widgets.SunsetSunRiseRow
+import com.weather.forecast.widgets.WeatherAppBar
 import com.weather.forecast.widgets.WeatherDetailRow
-import com.weather.forecast.widgets.WeatherStateImage
 
 @Composable
 fun MainScreen(
@@ -53,7 +55,7 @@ fun MainScreen(
     if (weatherData.loading == true) {
         CircularProgressIndicator()
     } else if (weatherData.data != null) {
-        MainContent(
+        MainScaffold(
             navController = navController,
             mainViewModel = mainViewModel,
             weatherData = weatherData.data!!
@@ -62,13 +64,41 @@ fun MainScreen(
 }
 
 @Composable
+fun MainScaffold(
+    navController: NavController,
+    mainViewModel: MainViewModel,
+    weatherData: WeatherData,
+) {
+    Scaffold(topBar = {
+        WeatherAppBar(
+            title = weatherData.weatherNow.now.obsTime,
+            navController = navController,
+            onAddActionClicked = {
+                navController.navigate(WeatherScreens.SearchScreen.name)
+            },
+            elevation = 5.dp
+        ) {
+            Log.d("TAG", "MainScaffold: Button Clicked")
+        }
+    }) { padding ->
+        MainContent(
+            modifier = Modifier.padding(padding),
+            navController = navController,
+            mainViewModel = mainViewModel,
+            weatherData = weatherData
+        )
+    }
+}
+
+@Composable
 fun MainContent(
+    modifier: Modifier,
     navController: NavController,
     mainViewModel: MainViewModel,
     weatherData: WeatherData,
 ) {
     Column(
-        Modifier
+        modifier
             .padding(4.dp)
             .fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
@@ -90,10 +120,14 @@ fun MainContent(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                WeatherStateImage(imageUrl = "imageUrl")
+                Text(
+                    text = "${weatherData.weatherNow.now.text}º",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.ExtraBold
+                )
                 Text(
                     text = "${weatherData.weatherNow.now.temp}º",
-                    style = androidx.compose.material.MaterialTheme.typography.h4,
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.ExtraBold
                 )
                 Text(
@@ -104,7 +138,7 @@ fun MainContent(
         }
         HumidityWindPressureRow(weather = weatherData.weatherNow)
         HorizontalDivider()
-        SunsetSunRiseRow(weather = weatherData.weatherNow)
+        SunsetSunRiseRow(daily = weatherData.weather7d.daily.get(0))
         Text(
             "This Week",
             style = MaterialTheme.typography.bodyLarge,
@@ -113,8 +147,9 @@ fun MainContent(
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight().clickable {
-                    navController.navigate(WeatherScreens.AboutScreen.name )
+                .fillMaxHeight()
+                .clickable {
+                    navController.navigate(WeatherScreens.AboutScreen.name)
                 },
             color = Color(0xFFEEF1EF),
             shape = RoundedCornerShape(size = 14.dp)
