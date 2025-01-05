@@ -20,6 +20,8 @@ moshi="1.15.2"
 androidxStartup = "1.2.0"
 androidxRoom = "2.6.1"
 androidxWorker = "2.10.0"
+androidxSplashScreen = "1.0.1"
+paging = "3.3.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,6 +44,9 @@ androidx-startup = { group = "androidx.startup", name = "startup-runtime", versi
 androidx-worker = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWorker" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "androidxRoom" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidxRoom" }
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxSplashScreen" }
+androidx-paging-runtime= { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
+androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
 
 # Hilt
 dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
@@ -67,6 +72,7 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 # Coil
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

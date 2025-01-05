@@ -23,30 +23,42 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideOpenWeatherApi(): WeatherApi {
-        val clientBuild =
-            OkHttpClient.Builder()
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .callTimeout(30, TimeUnit.SECONDS)
-                .dispatcher(Dispatcher().apply {
-                    maxRequestsPerHost = 10
-                })
-        clientBuild.addInterceptor(HttpLoggingInterceptor { message ->
-            Timber.tag("OKHttp-----").i(message)
-        }.apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        })
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .callTimeout(30, TimeUnit.SECONDS)
+            .dispatcher(Dispatcher().apply {
+                maxRequestsPerHost = 10
+            })
+            .addInterceptor(HttpLoggingInterceptor { message ->
+                Timber.tag("OKHttp-----").i(message)
+            }.apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
+            .build()
+    }
 
-        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+    @Provides
+    @Singleton
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+    }
 
+    @Provides
+    @Singleton
+    fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .client(clientBuild.build())
+            .client(okHttpClient)
             .build()
-            .create(WeatherApi::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideOpenWeatherApi(retrofit: Retrofit): WeatherApi {
+        return retrofit.create(WeatherApi::class.java)
+    }
 
 }
