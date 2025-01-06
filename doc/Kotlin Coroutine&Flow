@@ -1,0 +1,28 @@
+http://8.136.122.222/book/middle/week2/kotlin_coroutine.html
+http://8.136.122.222/book/middle/week2/flow.html
+
+StateFlow 和 SharedFlow 的区别：StateFlow 只保留最新值，SharedFlow 根据配置可以保留历史数据
+
+SideEffect {
+
+}
+
+// 加强版的 SideEffect
+DisposableEffect(Unit) {
+    println("进入页面了")
+    onDispose {
+        println("离开页面了")
+    }
+}
+
+// 与 DisposableEffect 同源，特殊场景
+LaunchedEffect()
+
+rememberUpdatedState()
+
+rememberCoroutineScope()
+
+// 协程和其他状态向 Compose 状态的转换
+produceState()
+// 少用liveData，多用flow
+liveData.observeAsState()
