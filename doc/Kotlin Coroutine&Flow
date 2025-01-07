@@ -25,4 +25,30 @@ rememberCoroutineScope()
 // 协程和其他状态向 Compose 状态的转换
 produceState()
 // 少用liveData，多用flow
-liveData.observeAsState()
+val positionStateFromLiveData = liveData.observeAsState()
+
+val positionState: StateFlow<Point> = xxx
+var position by remember { mutableStateOf(Point(0, 0)) }
+LaunchedEffect() {
+    positionState.collect { newPos ->
+        position = newPos
+    }
+}
+val positionStateFromFlow = positionState.collectAsState()
+
+// 和上面写法作用一样
+val producedState = produceState(initialValue = Point(0, 0)) {
+    positionState.collect { newPos ->
+        value = newPos
+    }
+}
+
+var name by remember { mutableStateOf("xxx") }
+var age by remember { mutableStateOf("xxx") }
+// 用于将 Compose 的 State 转化为 Kotlin 的 Flow
+val flow = snapshotFlow { "$name $age" }
+LaunchedEffect() {
+    flow.collect { info ->
+        println(info)
+    }
+}
