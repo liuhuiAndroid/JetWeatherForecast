@@ -1,5 +1,6 @@
 package com.weather.forecast.navigation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -105,6 +106,8 @@ fun WeatherNavigation() {
             composable(
                 WeatherScreens.MainScreen.name
             ) {
+                // Handle back button press when on the main video screen
+                BackHandler(true) {}
                 MainScreen(
                     navController = navController,
                     hiltViewModel<MainViewModel>(),

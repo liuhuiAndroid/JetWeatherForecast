@@ -44,15 +44,15 @@ fun MainScreen(
 ) {
     val currentLocation: String =
         if (location?.isBlank() == true) "101010100" else location.toString()
-    val weatherData = produceState<DataOrException<WeatherData, Boolean, Exception>>(
-        initialValue = DataOrException(loading = true)
+    val weatherData = produceState<DataOrException<WeatherData>>(
+        initialValue = DataOrException(isLoading = true)
     ) {
         value = mainViewModel.getWeatherData(
             location = currentLocation,
         )
     }.value
 
-    if (weatherData.loading == true) {
+    if (weatherData.isLoading) {
         CircularProgressIndicator()
     } else if (weatherData.data != null) {
         MainScaffold(

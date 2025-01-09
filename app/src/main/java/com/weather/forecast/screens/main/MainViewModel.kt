@@ -2,6 +2,7 @@ package com.weather.forecast.screens.main
 
 import androidx.lifecycle.ViewModel
 import com.weather.forecast.data.DataOrException
+import com.weather.forecast.data.Error
 import com.weather.forecast.model.WeatherData
 import com.weather.forecast.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val repository: WeatherRepository) : ViewModel() {
 
-    suspend fun getWeatherData(location: String): DataOrException<WeatherData, Boolean, Exception> {
+    suspend fun getWeatherData(location: String): DataOrException<WeatherData> {
         return try {
             coroutineScope {
                 val weatherNowDeferred = async { repository.getWeatherNow(location) }
@@ -30,11 +31,11 @@ class MainViewModel @Inject constructor(private val repository: WeatherRepositor
                         )
                     )
                 } else {
-                    DataOrException(e = Exception("Failed to fetch weather data"))
+                    DataOrException(error = Error(-1, "Failed to fetch weather data"))
                 }
             }
         } catch (e: Exception) {
-            DataOrException(e = e)
+            DataOrException(error = Error(-1, e.message))
         }
     }
 
