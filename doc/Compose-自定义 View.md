@@ -76,3 +76,48 @@ BoxWithConstraints {
 Scaffold
 LazyColumn
 // --------------
+触摸反馈
+Modifier.pointerInput(Unit){
+    awaitEachGesture {
+        val event = awaitPointerEvent()
+    }
+}
+
+// --------------
+val listState = rememberLazyListState()
+LazyColumn(state = listState) {
+    item {
+
+    }
+}
+val scope = rememberCoroutineScope()
+Button(onClick = {
+    scope.launch {
+        listState.animateScrollToItem()
+    }
+}) { }
+
+val interactionSource = remember { MutableInteractionSource() }
+var offsetX by remember { mutableFloatStateOf(0f) }
+Text("xxx", Modifier.offset {
+    IntOffset(offsetX.roundToInt(), 0)
+}.draggable(rememberDraggableState { delta ->
+    println("$delta")
+    offsetX += delta
+}, Orientation.Horizontal, interactionSource = interactionSource))
+val isDragged by interactionSource.collectIsDraggedAsState()
+Text(if(isDragged) "拖动中" else "静止")
+
+// 惯性滑动、嵌套滑动
+Modifier.scrollable(
+    rememberScrollableState {
+        println("$it")
+        it
+    }, Orientation.Horizontal,
+    overscrollEffect = ScrollableDefaults.overscrollEffect()
+)
+Modifier.verticalScroll()
+Modifier.horizontalScroll()
+
+// --------------
+Modifier.nestedScroll()
