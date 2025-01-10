@@ -3,11 +3,12 @@ http://8.136.122.222/book/middle/week2/flow.html
 
 StateFlow 和 SharedFlow 的区别：StateFlow 只保留最新值，SharedFlow 根据配置可以保留历史数据
 
+// 进入页面回调
 SideEffect {
 
 }
 
-// 加强版的 SideEffect
+// 加强版的 SideEffect，进入页面回调 + 离开页面回调
 DisposableEffect(Unit) {
     println("进入页面了")
     onDispose {
@@ -15,11 +16,25 @@ DisposableEffect(Unit) {
     }
 }
 
-// 与 DisposableEffect 同源，特殊场景
+// 与 DisposableEffect 同源，特殊场景：专门面对协程；协程版本的 DisposableEffect
+// 需求基于协程用 LaunchedEffect，否则用 DisposableEffect
 LaunchedEffect()
 
+@Composable
+fun CustomLaunchedEffect(welcome: String) {
+    var rememberWelcome by remember { mutableStateOf(welcome) }
+    rememberWelcome = welcome
+    // 稍后使用变量的场景，不触发重启，也需要监听最新值；DisposableEffect 也是同理
+    LaunchedEffect(Unit) {
+        delay(3000)
+        println("@@= $rememberWelcome")
+    }
+}
+// 使用 remember 跨越多次重组，简化的独立函数
 rememberUpdatedState()
+val rememberWelcome by rememberUpdatedState(welcome)
 
+// 协程
 rememberCoroutineScope()
 
 // 协程和其他状态向 Compose 状态的转换
