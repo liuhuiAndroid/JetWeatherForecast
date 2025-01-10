@@ -34,12 +34,17 @@ fun CustomLaunchedEffect(welcome: String) {
 rememberUpdatedState()
 val rememberWelcome by rememberUpdatedState(welcome)
 
-// 协程
-rememberCoroutineScope()
+// 协程的另一种方式，用途是可以在被点击的 clickable 中启动协程
+val scope = rememberCoroutineScope()
+remember {
+    // 反正重组时反复调用
+    scope.launch {  }
+}
+lifecycleScope.launch{} 在 Compose 中不能用，因为不能使用 Activity 的 CoroutineScope
 
 // 协程和其他状态向 Compose 状态的转换
-produceState()
-// 少用liveData，多用flow
+produceState(initialValue, producer)
+// 少用liveData，多用flow；liveData 转 State，每次把 liveData 最新值推给 State
 val positionStateFromLiveData = liveData.observeAsState()
 
 val positionState: StateFlow<Point> = xxx
@@ -51,7 +56,7 @@ LaunchedEffect() {
 }
 val positionStateFromFlow = positionState.collectAsState()
 
-// 和上面写法作用一样
+// 和上面用 LaunchedEffect 的写法作用一样，在协程里面更新 State 值
 val producedState = produceState(initialValue = Point(0, 0)) {
     positionState.collect { newPos ->
         value = newPos
