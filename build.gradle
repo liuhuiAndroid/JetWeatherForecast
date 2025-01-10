@@ -6,5 +6,7 @@ plugins {
     alias(libs.plugins.ksp) apply false
     // ksp kapt annotationProcessing
     alias(libs.plugins.hilt) apply false
+    // https://medium.com/@munbonecci/how-to-secure-your-api-keys-or-secrets-with-the-secrets-gradle-plugin-f1ec7c88023f
+    alias(libs.plugins.secrets.gradle.plugin) apply false
     // 写法和 id("com.google.dagger.hilt.android") version "2.51.1" apply false 有什么不同
 }
