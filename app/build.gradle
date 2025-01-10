@@ -21,7 +21,23 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    //配置签名的关键信息
+    signingConfigs {
+        debug {
+            // keytool -list -v -keystore dev.keystore -storepass android
+            // SHA1: 4F:0D:29:BC:E2:EA:38:4E:34:27:42:4D:E7:C1:76:FB:67:05:5E:D8
+            // SHA256: 0B:42:CE:CA:CA:D2:F0:84:B4:66:1C:51:EB:9B:B3:49:3A:6E:5A:98:AF:8F:BE:03:F2:14:A5:56:06:3A:0A:78
+            storeFile file('dev.keystore')
+            storePassword "android"
+            keyAlias "Test"
+            keyPassword "android"
+        }
+    }
+
     buildTypes {
+        debug {
+            signingConfig = signingConfigs["debug"]
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -89,4 +105,8 @@ dependencies {
     // Coil
     implementation libs.coil.compose
     implementation libs.coil.network.okhttp
+    implementation libs.lottie.compose
+
+    // Location
+    implementation libs.location
 }

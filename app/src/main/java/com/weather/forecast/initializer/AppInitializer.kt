@@ -8,6 +8,7 @@ class AppInitializer : Initializer<Unit> {
     override fun create(context: Context) = Unit
 
     override fun dependencies(): List<Class<out Initializer<*>>> = listOf(
-        TimberInitializer::class.java
+        TimberInitializer::class.java,
+        LocationInitializer::class.java,
     )
 }

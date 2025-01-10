@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
@@ -32,7 +33,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -44,10 +44,10 @@ import com.weather.forecast.navigation.WeatherScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WeatherAppBar(
+fun WeatherTopAppBar(
     title: String = "Title",
-    icon: ImageVector? = null,
-    isMainScreen: Boolean = true,
+    showBackButton: Boolean = false,
+    showActions: Boolean = true,
     elevation: Dp = 0.dp,
     navController: NavController,
     onAddActionClicked: () -> Unit = {},
@@ -76,7 +76,7 @@ fun WeatherAppBar(
             )
         },
         actions = {
-            if (isMainScreen) {
+            if (showActions) {
                 IconButton(onClick = {
                     onAddActionClicked.invoke()
                 }) {
@@ -84,7 +84,6 @@ fun WeatherAppBar(
                         imageVector = Icons.Default.Search,
                         contentDescription = "search icon"
                     )
-
                 }
                 IconButton(onClick = {
                     showDialog.value = true
@@ -93,17 +92,20 @@ fun WeatherAppBar(
                         imageVector = Icons.Rounded.MoreVert,
                         contentDescription = "More Icon"
                     )
-
                 }
             } else Box {}
 
         },
         navigationIcon = {
-            if (icon != null) {
-                Icon(imageVector = icon, contentDescription = null,
-                    modifier = Modifier.clickable {
-                        onButtonClicked.invoke()
-                    })
+            if (showBackButton) {
+                IconButton({
+                    onButtonClicked.invoke()
+                }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "back icon"
+                    )
+                }
             }
         }
     )

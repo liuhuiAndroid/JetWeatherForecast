@@ -33,8 +33,8 @@ import com.weather.forecast.model.WeatherData
 import com.weather.forecast.navigation.WeatherScreens
 import com.weather.forecast.widgets.HumidityWindPressureRow
 import com.weather.forecast.widgets.SunsetSunRiseRow
-import com.weather.forecast.widgets.WeatherAppBar
 import com.weather.forecast.widgets.WeatherDetailRow
+import com.weather.forecast.widgets.WeatherTopAppBar
 
 @Composable
 fun MainScreen(
@@ -70,7 +70,7 @@ fun MainScaffold(
     weatherData: WeatherData,
 ) {
     Scaffold(topBar = {
-        WeatherAppBar(
+        WeatherTopAppBar(
             title = weatherData.weatherNow.now.obsTime,
             navController = navController,
             onAddActionClicked = {
