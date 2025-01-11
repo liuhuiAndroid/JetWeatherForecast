@@ -15,12 +15,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.weather.forecast.R
+import com.weather.forecast.location.LocationManager
+import com.weather.forecast.location.RequestLocationPermissionUsingRememberLauncherForActivityResult
 import com.weather.forecast.widgets.CustomDialog
 import com.weather.forecast.widgets.CustomLottieAnimation
 import com.weather.forecast.widgets.ExpandableText
@@ -67,8 +71,27 @@ fun AboutScreen(navController: NavController) {
                     cancelButtonText = "取消",
                     onConfirm = { /* 确认逻辑 */ },
                     onDismiss = { showDialog = false })
+
+                val context = LocalContext.current
+                var locationText by remember { mutableStateOf("No location obtained :(") }
+                RequestLocationPermissionUsingRememberLauncherForActivityResult(
+                    onPermissionGranted = {
+                        // Attempt to get the current user location
+                        LocationManager.getCurrentLocation(
+                            context,
+                            onGetCurrentLocationSuccess = {
+                                locationText =
+                                    "LATITUDE: ${it.first}, LONGITUDE: ${it.second}"
+                            }
+                        )
+                    },
+                    onPermissionDenied = {
+                        locationText = "Permission Denied :("
+                    }
+                )
+                Text(text = locationText, textAlign = TextAlign.Center)
             }
         }
     }
-
 }
+
