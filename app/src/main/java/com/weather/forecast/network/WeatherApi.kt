@@ -1,5 +1,7 @@
 package com.weather.forecast.network
 
+import com.weather.forecast.data.AuthRequest
+import com.weather.forecast.data.AuthResponse
 import com.weather.forecast.utils.Constants
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -7,6 +9,12 @@ import javax.inject.Singleton
 import com.weather.forecast.model.WeatherNow
 import com.weather.forecast.model.Weather7d
 import com.weather.forecast.model.Weather24h
+import retrofit2.http.Body
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Header
+import retrofit2.http.Multipart
+import retrofit2.http.POST
 
 @Singleton
 interface WeatherApi {
@@ -38,4 +46,14 @@ interface WeatherApi {
         @Query("location") location: String,
         @Query("key") key: String = Constants.API_KEY,
     ): Weather24h
+
+    @POST(value = "auth")
+    suspend fun auth(
+        @Header("signKey") signKey: String,
+        @Header("timestamp") timestamp: String,
+        @Header("signature") signature: String,
+        @Body authRequest: AuthRequest,
+        @Header("Content-Type") contentType: String = Constants.contentType,
+    ): AuthResponse
+
 }

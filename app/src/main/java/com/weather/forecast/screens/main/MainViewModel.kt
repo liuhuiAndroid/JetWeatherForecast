@@ -19,6 +19,8 @@ class MainViewModel @Inject constructor(private val repository: WeatherRepositor
                 val weatherNowDeferred = async { repository.getWeatherNow(location) }
                 val weather7dDeferred = async { repository.getWeather7d(location) }
                 val weather24hDeferred = async { repository.getWeather24h(location) }
+                val authDeferred = async { repository.auth("signKey123") }
+                val auth = authDeferred.await()
                 val weatherNow = weatherNowDeferred.await()
                 val weather7d = weather7dDeferred.await()
                 val weather24h = weather24hDeferred.await()
