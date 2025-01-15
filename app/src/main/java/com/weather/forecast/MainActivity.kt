@@ -1,5 +1,6 @@
 package com.weather.forecast
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -29,6 +30,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             WeatherApp()
         }
+        startActivity(Intent(this, FlexboxLayoutTestActivity::class.java))
     }
 }
 

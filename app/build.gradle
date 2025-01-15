@@ -110,4 +110,6 @@ dependencies {
     // Location
     implementation libs.location
     implementation libs.permissions
+
+    implementation libs.flexbox
 }
